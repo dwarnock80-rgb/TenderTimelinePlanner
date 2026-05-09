@@ -8,17 +8,47 @@
 
 /* Begin PBXBuildFile section */
 		C94A02412FADDF970059A4F5 /* TenderTimelinePlannerApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = C94A02402FADDF970059A4F5 /* TenderTimelinePlannerApp.swift */; };
-		C94A02432FADDF970059A4F5 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C94A02422FADDF970059A4F5 /* ContentView.swift */; };
 		C94A02452FADDF9D0059A4F5 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = C94A02442FADDF9D0059A4F5 /* Assets.xcassets */; };
 		C94A02482FADDF9D0059A4F5 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = C94A02472FADDF9D0059A4F5 /* Preview Assets.xcassets */; };
+		C94A02562FADE04D0059A4F5 /* DurationType.swift in Sources */ = {isa = PBXBuildFile; fileRef = C94A02502FADE04B0059A4F5 /* DurationType.swift */; };
+		C94A02572FADE04D0059A4F5 /* TimelineCalculator.swift in Sources */ = {isa = PBXBuildFile; fileRef = C94A02512FADE04B0059A4F5 /* TimelineCalculator.swift */; };
+		C94A02582FADE04D0059A4F5 /* TimelineStage.swift in Sources */ = {isa = PBXBuildFile; fileRef = C94A02522FADE04C0059A4F5 /* TimelineStage.swift */; };
+		C96536862FAE7CBC00966C71 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C96536852FAE7CBC00966C71 /* ContentView.swift */; };
+		C96536882FAE8F0400966C71 /* TimelineModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = C96536872FAE8F0300966C71 /* TimelineModels.swift */; };
+		C965368A2FAE91B700966C71 /* TimelineDateCalculator.swift in Sources */ = {isa = PBXBuildFile; fileRef = C96536892FAE91B700966C71 /* TimelineDateCalculator.swift */; };
+		C965368C2FAE920800966C71 /* TimelineTemplates.swift in Sources */ = {isa = PBXBuildFile; fileRef = C965368B2FAE920800966C71 /* TimelineTemplates.swift */; };
+		C965368E2FAF340F00966C71 /* EditStageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C965368D2FAF340F00966C71 /* EditStageView.swift */; };
+		C96536902FAFC21800966C71 /* AddCustomStepView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C965368F2FAFC21800966C71 /* AddCustomStepView.swift */; };
+		C96536922FAFC5FA00966C71 /* ShareSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = C96536912FAFC5FA00966C71 /* ShareSheet.swift */; };
+		C96536942FAFCA7100966C71 /* GanttExportView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C96536932FAFCA7100966C71 /* GanttExportView.swift */; };
+		C99365112FAE175A00D44FCC /* TimelineDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C99365102FAE175A00D44FCC /* TimelineDetailView.swift */; };
+		C99365132FAE325E00D44FCC /* Color+Hex.swift in Sources */ = {isa = PBXBuildFile; fileRef = C99365122FAE325E00D44FCC /* Color+Hex.swift */; };
+		C9A18D3E2FADE29E00C445FF /* TemplateStage.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9A18D3D2FADE29E00C445FF /* TemplateStage.swift */; };
+		C9A18D402FADE90900C445FF /* AboutView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9A18D3F2FADE90900C445FF /* AboutView.swift */; };
+		C9A18D422FADECF400C445FF /* SavedTimelineView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9A18D412FADECF400C445FF /* SavedTimelineView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
 		C94A023D2FADDF970059A4F5 /* TenderTimelinePlanner.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TenderTimelinePlanner.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		C94A02402FADDF970059A4F5 /* TenderTimelinePlannerApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TenderTimelinePlannerApp.swift; sourceTree = "<group>"; };
-		C94A02422FADDF970059A4F5 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 		C94A02442FADDF9D0059A4F5 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		C94A02472FADDF9D0059A4F5 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
+		C94A02502FADE04B0059A4F5 /* DurationType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DurationType.swift; sourceTree = "<group>"; };
+		C94A02512FADE04B0059A4F5 /* TimelineCalculator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TimelineCalculator.swift; sourceTree = "<group>"; };
+		C94A02522FADE04C0059A4F5 /* TimelineStage.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TimelineStage.swift; sourceTree = "<group>"; };
+		C96536852FAE7CBC00966C71 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
+		C96536872FAE8F0300966C71 /* TimelineModels.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimelineModels.swift; sourceTree = "<group>"; };
+		C96536892FAE91B700966C71 /* TimelineDateCalculator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimelineDateCalculator.swift; sourceTree = "<group>"; };
+		C965368B2FAE920800966C71 /* TimelineTemplates.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimelineTemplates.swift; sourceTree = "<group>"; };
+		C965368D2FAF340F00966C71 /* EditStageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditStageView.swift; sourceTree = "<group>"; };
+		C965368F2FAFC21800966C71 /* AddCustomStepView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddCustomStepView.swift; sourceTree = "<group>"; };
+		C96536912FAFC5FA00966C71 /* ShareSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShareSheet.swift; sourceTree = "<group>"; };
+		C96536932FAFCA7100966C71 /* GanttExportView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GanttExportView.swift; sourceTree = "<group>"; };
+		C99365102FAE175A00D44FCC /* TimelineDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimelineDetailView.swift; sourceTree = "<group>"; };
+		C99365122FAE325E00D44FCC /* Color+Hex.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Color+Hex.swift"; sourceTree = "<group>"; };
+		C9A18D3D2FADE29E00C445FF /* TemplateStage.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TemplateStage.swift; sourceTree = "<group>"; };
+		C9A18D3F2FADE90900C445FF /* AboutView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AboutView.swift; sourceTree = "<group>"; };
+		C9A18D412FADECF400C445FF /* SavedTimelineView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SavedTimelineView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -51,8 +81,23 @@
 		C94A023F2FADDF970059A4F5 /* TenderTimelinePlanner */ = {
 			isa = PBXGroup;
 			children = (
+				C9A18D3F2FADE90900C445FF /* AboutView.swift */,
+				C965368F2FAFC21800966C71 /* AddCustomStepView.swift */,
+				C99365122FAE325E00D44FCC /* Color+Hex.swift */,
+				C96536852FAE7CBC00966C71 /* ContentView.swift */,
+				C94A02502FADE04B0059A4F5 /* DurationType.swift */,
+				C965368D2FAF340F00966C71 /* EditStageView.swift */,
+				C96536932FAFCA7100966C71 /* GanttExportView.swift */,
+				C9A18D412FADECF400C445FF /* SavedTimelineView.swift */,
+				C96536912FAFC5FA00966C71 /* ShareSheet.swift */,
+				C9A18D3D2FADE29E00C445FF /* TemplateStage.swift */,
+				C94A02512FADE04B0059A4F5 /* TimelineCalculator.swift */,
+				C94A02522FADE04C0059A4F5 /* TimelineStage.swift */,
+				C96536892FAE91B700966C71 /* TimelineDateCalculator.swift */,
+				C99365102FAE175A00D44FCC /* TimelineDetailView.swift */,
+				C96536872FAE8F0300966C71 /* TimelineModels.swift */,
+				C965368B2FAE920800966C71 /* TimelineTemplates.swift */,
 				C94A02402FADDF970059A4F5 /* TenderTimelinePlannerApp.swift */,
-				C94A02422FADDF970059A4F5 /* ContentView.swift */,
 				C94A02442FADDF9D0059A4F5 /* Assets.xcassets */,
 				C94A02462FADDF9D0059A4F5 /* Preview Content */,
 			);
@@ -137,8 +182,23 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				C94A02432FADDF970059A4F5 /* ContentView.swift in Sources */,
+				C96536882FAE8F0400966C71 /* TimelineModels.swift in Sources */,
+				C94A02572FADE04D0059A4F5 /* TimelineCalculator.swift in Sources */,
+				C96536942FAFCA7100966C71 /* GanttExportView.swift in Sources */,
+				C94A02582FADE04D0059A4F5 /* TimelineStage.swift in Sources */,
+				C96536902FAFC21800966C71 /* AddCustomStepView.swift in Sources */,
+				C965368E2FAF340F00966C71 /* EditStageView.swift in Sources */,
+				C94A02562FADE04D0059A4F5 /* DurationType.swift in Sources */,
+				C9A18D422FADECF400C445FF /* SavedTimelineView.swift in Sources */,
+				C96536922FAFC5FA00966C71 /* ShareSheet.swift in Sources */,
 				C94A02412FADDF970059A4F5 /* TenderTimelinePlannerApp.swift in Sources */,
+				C965368A2FAE91B700966C71 /* TimelineDateCalculator.swift in Sources */,
+				C99365132FAE325E00D44FCC /* Color+Hex.swift in Sources */,
+				C9A18D402FADE90900C445FF /* AboutView.swift in Sources */,
+				C9A18D3E2FADE29E00C445FF /* TemplateStage.swift in Sources */,
+				C96536862FAE7CBC00966C71 /* ContentView.swift in Sources */,
+				C99365112FAE175A00D44FCC /* TimelineDetailView.swift in Sources */,
+				C965368C2FAE920800966C71 /* TimelineTemplates.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -267,8 +327,11 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"TenderTimelinePlanner/Preview Content\"";
+				DEVELOPMENT_TEAM = SQ769RMW98;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_CFBundleDisplayName = "Tender Tineline";
+				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.business";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -279,7 +342,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = DWData.TenderTimelinePlanner;
+				PRODUCT_BUNDLE_IDENTIFIER = com.danielwarnock.tendertimelineplanner;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
@@ -295,8 +358,11 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"TenderTimelinePlanner/Preview Content\"";
+				DEVELOPMENT_TEAM = SQ769RMW98;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_CFBundleDisplayName = "Tender Tineline";
+				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.business";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -307,7 +373,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = DWData.TenderTimelinePlanner;
+				PRODUCT_BUNDLE_IDENTIFIER = com.danielwarnock.tendertimelineplanner;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
