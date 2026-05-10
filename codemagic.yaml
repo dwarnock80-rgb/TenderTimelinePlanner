@@ -7,7 +7,7 @@ workflows:
         - AppStoreConnect
       ios_signing:
         distribution_type: app_store
-        bundle_identifier: com.danielwarnock.TenderTimelinePlanner
+        bundle_identifier: com.danielwarnock.tendertimelineapp
 
     scripts:
       - name: Build ipa
