@@ -1,17 +1,19 @@
 workflows:
   ios-workflow:
     name: iOS Workflow
+
     environment:
-      xcode: latest
+      ios_signing:
+        distribution_type: app_store
+        bundle_identifier: com.danielwarnock.TenderTimelinePlanner
 
     scripts:
-  - name: Build iOS app
-    script: |
-      xcodebuild archive \
-        -project TenderTimelinePlanner.xcodeproj \
-        -scheme TenderTimelinePlanner \
-        -destination "generic/platform=iOS" \
-        -archivePath build/TenderTimelinePlanner.xcarchive
+      - name: Build ipa
+        script: |
+          xcode-project build-ipa \
+            --project "TenderTimelinePlanner.xcodeproj" \
+            --scheme "TenderTimelinePlanner"
 
-    artifacts:
-      - build/**/*.app
+    publishing:
+      app_store_connect:
+        auth: integration
