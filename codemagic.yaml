@@ -5,12 +5,13 @@ workflows:
       xcode: latest
 
     scripts:
-      - name: Build iOS app
-        script: |
-          xcodebuild build \
-            -project TenderTimelinePlanner.xcodeproj \
-            -scheme TenderTimelinePlanner \
-            -destination "generic/platform=iOS Simulator"
+  - name: Build iOS app
+    script: |
+      xcodebuild archive \
+        -project TenderTimelinePlanner.xcodeproj \
+        -scheme TenderTimelinePlanner \
+        -destination "generic/platform=iOS" \
+        -archivePath build/TenderTimelinePlanner.xcarchive
 
     artifacts:
       - build/**/*.app
