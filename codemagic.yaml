@@ -2,10 +2,9 @@ workflows:
   ios-workflow:
     name: iOS Workflow
 
-    integrations:
-      app_store_connect: API Key
-
     environment:
+      groups:
+        - AppStoreConnect
       ios_signing:
         distribution_type: app_store
         bundle_identifier: com.danielwarnock.TenderTimelinePlanner
@@ -19,4 +18,7 @@ workflows:
 
     publishing:
       app_store_connect:
+        key_id: $APP_STORE_CONNECT_KEY_IDENTIFIER
+        issuer_id: $APP_STORE_CONNECT_ISSUER_ID
+        api_key: $APP_STORE_CONNECT_PRIVATE_KEY
         submit_to_testflight: true
