@@ -1,6 +1,6 @@
 import Foundation
 
-struct ProcurementTimeline: Identifiable, Codable {
+struct ProcurementTimeline: Identifiable, Codable, Sendable {
     var id: UUID = UUID()
     var projectName: String
     var startDate: Date

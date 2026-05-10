@@ -17,21 +17,19 @@ struct TimelineView: View {
 
             Section(header: Text("Procurement Timeline")) {
 
-                ForEach(stages.indices, id: \.self) { index in
+                ForEach($stages) { $stage in
 
                     NavigationLink(
-                        destination: EditStageView(stage: stage) { updatedStage in
-                            updateStage(updatedStage)
-                        }
+                        destination: EditBasicTimelineStageView(stage: $stage)
                     ) {
 
                         VStack(alignment: .leading) {
 
-                            Text(stages[index].title)
+                            Text(stage.title)
                                 .font(.headline)
 
                             Text(
-                                stages[index].date.formatted(
+                                stage.date.formatted(
                                     date: .abbreviated,
                                     time: .omitted
                                 )
@@ -114,9 +112,43 @@ struct TimelineView: View {
 
 }
 
+struct EditBasicTimelineStageView: View {
+
+    @Environment(\.dismiss) private var dismiss
+
+    @Binding var stage: TimelineStage
+
+    var body: some View {
+        Form {
+            Section(header: Text("Stage Details")) {
+                TextField("Title", text: $stage.title)
+
+                DatePicker(
+                    "Date",
+                    selection: $stage.date,
+                    displayedComponents: .date
+                )
+            }
+
+            Section(header: Text("Notes")) {
+                TextEditor(text: $stage.notes)
+                    .frame(minHeight: 120)
+            }
+        }
+        .navigationTitle("Edit Stage")
+        .toolbar {
+            ToolbarItem(placement: .confirmationAction) {
+                Button("Done") {
+                    dismiss()
+                }
+            }
+        }
+    }
+}
+
 struct AddStageView: View {
 
-    @Environment(\.presentationMode) var presentationMode
+    @Environment(\.dismiss) private var dismiss
 
     @State private var title: String = ""
     @State private var date: Date = Date()
@@ -145,7 +177,7 @@ struct AddStageView: View {
             .navigationTitle("Add Stage")
             .navigationBarItems(
                 leading: Button("Cancel") {
-                    presentationMode.wrappedValue.dismiss()
+                    dismiss()
                 },
                 trailing: Button("Add") {
                     let newStage = TimelineStage(
@@ -155,7 +187,7 @@ struct AddStageView: View {
                     )
 
                     onAdd(newStage)
-                    presentationMode.wrappedValue.dismiss()
+                    dismiss()
                 }
                 .disabled(title.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty)
             )

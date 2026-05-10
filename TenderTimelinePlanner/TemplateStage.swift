@@ -1,6 +1,6 @@
 import Foundation
 
-struct TemplateStage {
+struct TemplateStage: Sendable {
     let order: Int
     let name: String
     let duration: Int
