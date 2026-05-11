@@ -2,15 +2,24 @@ workflows:
   ios-workflow:
     name: iOS Workflow
     environment:
+      ios_signing:
+        distribution_type: app_store
+        bundle_identifier: com.danielwarnock.tendertimelineapp
+      vars:
+        XCODE_PROJECT: TenderTimelinePlanner.xcodeproj
+        XCODE_SCHEME: TenderTimelinePlanner
       xcode: latest
 
     scripts:
-      - name: Build iOS app
+      - name: Set up code signing
+        script: xcode-project use-profiles
+      - name: Build ipa
         script: |
-          xcodebuild build \
-            -project TenderTimelinePlanner.xcodeproj \
-            -scheme TenderTimelinePlanner \
-            -destination 'platform=iOS Simulator,name=iPhone 15'
+          xcode-project build-ipa \
+            --project "$CM_BUILD_DIR/$XCODE_PROJECT" \
+            --scheme "$XCODE_SCHEME"
 
     artifacts:
-      - build/**/*.app
+      - build/ios/ipa/*.ipa
+      - /tmp/xcodebuild_logs/*.log
+      - $HOME/Library/Developer/Xcode/DerivedData/**/Build/**/*.dSYM
