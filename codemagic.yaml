@@ -10,6 +10,8 @@ workflows:
         bundle_identifier: com.danielwarnock.tendertimelineapp
 
     scripts:
+      - name: Set up code signing
+        script: xcode-project use-profiles
       - name: Build ipa
         script: |
           xcode-project build-ipa \
