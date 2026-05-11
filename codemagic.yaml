@@ -14,8 +14,7 @@ workflows:
         script: |
           xcode-project build-ipa \
             --project "TenderTimelinePlanner.xcodeproj" \
-            --scheme "TenderTimelinePlanner" \
-            --archive-method app-store
+            --scheme "TenderTimelinePlanner"
 
     publishing:
       app_store_connect:
