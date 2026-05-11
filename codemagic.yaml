@@ -10,11 +10,17 @@ workflows:
         bundle_identifier: com.danielwarnock.tendertimelineapp
 
     scripts:
+      - name: Set up code signing
+        script: |
+          xcode-project use-profiles --archive-method app-store
+          ls -la /Users/builder/
+
       - name: Build ipa
         script: |
           xcode-project build-ipa \
             --project "TenderTimelinePlanner.xcodeproj" \
-            --scheme "TenderTimelinePlanner"
+            --scheme "TenderTimelinePlanner" \
+            --archive-method app-store
 
     publishing:
       app_store_connect:
