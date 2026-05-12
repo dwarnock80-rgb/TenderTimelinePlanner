@@ -2,9 +2,12 @@ import SwiftUI
 
 struct TimelineDetailView: View {
 
+    @Environment(\.dismiss) private var dismiss
+
     let projectName: String
     let startDateText: String
     let templateName: String
+    let initialStages: [EditableTimelineStage]? = nil
 
     @State private var stages: [EditableTimelineStage] = []
     @State private var stageBeingEdited: EditableTimelineStage?
@@ -14,6 +17,8 @@ struct TimelineDetailView: View {
     @State private var showingCSVShareSheet = false
     @State private var ganttExportURL: URL?
     @State private var showingGanttShareSheet = false
+    @State private var showingSavedConfirmation = false
+    @State private var hasLoadedStages = false
 
     private var actualStartDate: Date {
         let formatter = DateFormatter()
@@ -28,37 +33,65 @@ struct TimelineDetailView: View {
             VStack(spacing: 0) {
                 header
                 
-                ScrollView {
-                    VStack(alignment: .leading, spacing: 20) {
-                        startDateRow
-                        exportButtons
-                        columnHeaders
-                        
-                        ForEach(Array(stages.enumerated()), id: \.element.id) { index, stage in
-                            EditableTimelineStageRow(
-                                stage: stage,
-                                index: index + 1,
-                                onEdit: {
-                                    stageBeingEdited = stage
-                                    showingEditSheet = true
-                                }
-                            )
+                List {
+                    startDateRow
+                        .listRowInsets(EdgeInsets(top: 14, leading: 20, bottom: 4, trailing: 20))
+                        .listRowSeparator(.hidden)
+                        .listRowBackground(Color.clear)
+
+                    exportButtons
+                        .listRowInsets(EdgeInsets(top: 4, leading: 20, bottom: 6, trailing: 20))
+                        .listRowSeparator(.hidden)
+                        .listRowBackground(Color.clear)
+
+                    columnHeaders
+                        .listRowInsets(EdgeInsets(top: 2, leading: 20, bottom: 2, trailing: 20))
+                        .listRowSeparator(.hidden)
+                        .listRowBackground(Color.clear)
+
+                    ForEach(Array(stages.enumerated()), id: \.element.id) { index, stage in
+                        EditableTimelineStageRow(
+                            stage: stage,
+                            index: index + 1,
+                            onEdit: {
+                                stageBeingEdited = stage
+                                showingEditSheet = true
+                            }
+                        )
+                        .swipeActions(edge: .trailing) {
+                            Button(role: .destructive) {
+                                deleteStage(stage)
+                            } label: {
+                                Label("Delete", systemImage: "trash")
+                            }
                         }
-                        
-                        addCustomStepButton
-                        infoBox
+                        .listRowInsets(EdgeInsets(top: 0, leading: 20, bottom: 0, trailing: 20))
+                        .listRowSeparator(.hidden)
+                        .listRowBackground(Color.clear)
                     }
-                    .padding(.horizontal, 20)
-                    .padding(.bottom, 40)
+
+                    addCustomStepButton
+                        .listRowInsets(EdgeInsets(top: 10, leading: 20, bottom: 8, trailing: 20))
+                        .listRowSeparator(.hidden)
+                        .listRowBackground(Color.clear)
+
+                    infoBox
+                        .listRowInsets(EdgeInsets(top: 0, leading: 20, bottom: 40, trailing: 20))
+                        .listRowSeparator(.hidden)
+                        .listRowBackground(Color.clear)
                 }
+                .listStyle(.plain)
+                .scrollContentBackground(.hidden)
             }
         }
         .navigationBarBackButtonHidden(true)
         .onAppear {
-            stages = TimelineTemplates.stages(
-                for: templateName,
-                startDate: actualStartDate
-            )
+            loadStagesIfNeeded()
+        }
+        .alert("Timeline saved", isPresented: $showingSavedConfirmation) {
+            Button("OK", role: .cancel) { }
+        } message: {
+            Text("You can reopen it from Saved Timelines.")
         }
         .sheet(item: $stageBeingEdited) { stage in
             EditStageView(stage: stage) { updatedStage in
@@ -86,6 +119,23 @@ struct TimelineDetailView: View {
             }
         }
     }
+
+    private func loadStagesIfNeeded() {
+        guard !hasLoadedStages else {
+            return
+        }
+
+        if let initialStages {
+            stages = initialStages
+        } else {
+            stages = TimelineTemplates.stages(
+                for: templateName,
+                startDate: actualStartDate
+            )
+        }
+
+        hasLoadedStages = true
+    }
     
     private func updateStage(_ updatedStage: EditableTimelineStage) {
         guard let index = stages.firstIndex(where: { $0.id == updatedStage.id }) else {
@@ -101,6 +151,28 @@ struct TimelineDetailView: View {
             stages: stages,
             from: actualStartDate
         )
+    }
+
+    private func deleteStage(_ stage: EditableTimelineStage) {
+        stages.removeAll { $0.id == stage.id }
+
+        stages = TimelineDateCalculator.recalculate(
+            stages: stages,
+            from: actualStartDate
+        )
+    }
+
+    private func saveTimeline() {
+        SavedTimelineStore.save(
+            SavedTimeline(
+                projectName: projectName.isEmpty ? "Untitled Timeline" : projectName,
+                startDateText: startDateText,
+                templateName: templateName,
+                stages: stages
+            )
+        )
+
+        showingSavedConfirmation = true
     }
     
     private func exportCSV() {
@@ -167,23 +239,39 @@ struct TimelineDetailView: View {
     }
     var header: some View {
         HStack {
-            Image(systemName: "chevron.left")
-                .font(.system(size: 26, weight: .medium))
+            Button {
+                dismiss()
+            } label: {
+                Image(systemName: "chevron.left")
+                    .font(.system(size: 24, weight: .medium))
+                    .frame(width: 44, height: 44)
+            }
+            .buttonStyle(.plain)
 
             Text(projectName.isEmpty ? "Test" : projectName)
-                .font(.system(size: 34, weight: .bold, design: .serif))
-                .padding(.leading, 20)
+                .font(.system(size: 31, weight: .bold, design: .serif))
+                .lineLimit(1)
+                .padding(.leading, 8)
 
             Spacer()
 
-            Image(systemName: "ellipsis")
-                .rotationEffect(.degrees(90))
-                .font(.system(size: 28, weight: .bold))
+            Button {
+                saveTimeline()
+            } label: {
+                Label("Save", systemImage: "tray.and.arrow.down")
+                    .font(.system(size: 18, weight: .bold))
+                    .labelStyle(.titleAndIcon)
+                    .padding(.horizontal, 14)
+                    .frame(height: 44)
+                    .background(Color(hex: "0B4543"))
+                    .foregroundColor(.white)
+                    .cornerRadius(12)
+            }
         }
         .foregroundColor(Color(hex: "183A38"))
-        .padding(.horizontal, 28)
-        .padding(.top, 70)
-        .padding(.bottom, 28)
+        .padding(.horizontal, 18)
+        .padding(.top, 60)
+        .padding(.bottom, 16)
         .background(Color.white)
     }
 
@@ -201,7 +289,6 @@ struct TimelineDetailView: View {
                 .font(.system(size: 21, weight: .bold))
                 .foregroundColor(Color(hex: "183A38"))
         }
-        .padding(.top, 24)
     }
 
     var exportButtons: some View {
@@ -218,20 +305,20 @@ struct TimelineDetailView: View {
     }
 
     var columnHeaders: some View {
-        HStack {
+        HStack(spacing: 10) {
             Text("STEP")
                 .frame(maxWidth: .infinity, alignment: .leading)
 
             Text("DATES")
-                .frame(width: 110)
+                .frame(width: 102)
 
             Text("DURATION")
-                .frame(width: 105)
+                .frame(width: 92)
         }
         .font(.system(size: 16, weight: .bold))
         .foregroundColor(Color(hex: "6E8583"))
-        .padding(.top, 8)
-        .padding(.leading, 86)
+        .padding(.leading, 70)
+        .padding(.trailing, 40)
     }
 
     var addCustomStepButton: some View {
@@ -252,7 +339,7 @@ struct TimelineDetailView: View {
             }
             .font(.system(size: 22))
             .foregroundColor(Color(hex: "183A38"))
-            .frame(height: 72)
+            .frame(height: 58)
             .overlay(
                 RoundedRectangle(cornerRadius: 16)
                     .stroke(
@@ -261,7 +348,6 @@ struct TimelineDetailView: View {
                     )
             )
         }
-        .padding(.top, 18)
     }
 
     var infoBox: some View {
@@ -289,45 +375,55 @@ struct EditableTimelineStageRow: View {
 
     var body: some View {
         VStack(spacing: 0) {
-            HStack(spacing: 18) {
+            HStack(spacing: 12) {
                 ZStack {
                     Circle()
                         .fill(Color(hex: stage.colourHex))
-                        .frame(width: 60, height: 60)
+                        .frame(width: 50, height: 50)
 
                     if stage.isMilestone {
                         Image(systemName: "flag")
-                            .font(.system(size: 28))
+                            .font(.system(size: 23, weight: .semibold))
                             .foregroundColor(.white)
                     } else {
                         Text("\(index)")
-                            .font(.system(size: 24, weight: .bold))
+                            .font(.system(size: 20, weight: .bold))
                             .foregroundColor(.white)
                     }
                 }
+                .frame(width: 54)
 
                 VStack(alignment: .leading, spacing: 6) {
                     Text(stage.title)
-                        .font(.system(size: 23, weight: .bold))
+                        .font(.system(size: 25, weight: .semibold))
                         .foregroundColor(Color(hex: "183A38"))
+                        .lineLimit(2)
+                        .truncationMode(.tail)
+                        .multilineTextAlignment(.leading)
+                        .fixedSize(horizontal: false, vertical: true)
 
                     Text(dateText(for: stage))
-                        .font(.system(size: 20))
+                        .font(.system(size: 21))
                         .foregroundColor(Color(hex: "6E8583"))
+                        .lineLimit(1)
+                        .minimumScaleFactor(0.9)
                 }
-
-                Spacer()
+                .frame(maxWidth: .infinity, alignment: .leading)
 
                 VStack(spacing: 2) {
                     Text("\(stage.duration)")
-                        .font(.system(size: 32, weight: .bold))
+                        .font(.system(size: 38, weight: .bold))
                         .foregroundColor(Color(hex: "EBAA2D"))
+                        .lineLimit(1)
+                        .minimumScaleFactor(0.75)
 
                     Text(durationUnitText(for: stage))
-                        .font(.system(size: 16))
+                        .font(.system(size: 18))
                         .foregroundColor(Color(hex: "6E8583"))
+                        .lineLimit(1)
+                        .minimumScaleFactor(0.75)
                 }
-                .frame(width: 82)
+                .frame(width: 76)
 
                 Button {
                     onEdit()
@@ -336,9 +432,11 @@ struct EditableTimelineStageRow: View {
                         .rotationEffect(.degrees(90))
                         .font(.system(size: 22, weight: .bold))
                         .foregroundColor(Color(hex: "6E8583"))
+                        .frame(width: 38, height: 44)
                 }
             }
-            .padding(.vertical, 18)
+            .frame(minHeight: 160, maxHeight: 180)
+            .padding(.vertical, 4)
 
             Divider()
                 .background(Color(hex: "DDD9D2"))
@@ -379,8 +477,8 @@ struct ExportButton: View {
                     .font(.system(size: 20, weight: .semibold))
             }
             .foregroundColor(Color(hex: "183A38"))
-            .padding(.horizontal, 22)
-            .frame(height: 54)
+            .padding(.horizontal, 18)
+            .frame(height: 46)
             .background(Color.white)
             .cornerRadius(14)
             .shadow(color: .black.opacity(0.08), radius: 6, x: 0, y: 3)
