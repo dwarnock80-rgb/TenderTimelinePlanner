@@ -40,26 +40,26 @@ struct TimelineDetailView: View {
 
     var body: some View {
         ZStack {
-            Color(hex: "F7F6F2").ignoresSafeArea()
+            Color.white.ignoresSafeArea()
             
             VStack(spacing: 0) {
                 header
                 
                 List {
                     startDateRow
-                        .listRowInsets(EdgeInsets(top: 14, leading: 20, bottom: 4, trailing: 20))
+                        .listRowInsets(EdgeInsets(top: 18, leading: 20, bottom: 8, trailing: 20))
                         .listRowSeparator(.hidden)
-                        .listRowBackground(Color.clear)
+                        .listRowBackground(Color.white)
 
                     exportButtons
-                        .listRowInsets(EdgeInsets(top: 4, leading: 20, bottom: 6, trailing: 20))
+                        .listRowInsets(EdgeInsets(top: 2, leading: 20, bottom: 18, trailing: 20))
                         .listRowSeparator(.hidden)
-                        .listRowBackground(Color.clear)
+                        .listRowBackground(Color.white)
 
                     columnHeaders
-                        .listRowInsets(EdgeInsets(top: 2, leading: 20, bottom: 2, trailing: 20))
+                        .listRowInsets(EdgeInsets(top: 0, leading: 20, bottom: 6, trailing: 20))
                         .listRowSeparator(.hidden)
-                        .listRowBackground(Color.clear)
+                        .listRowBackground(Color.white)
 
                     ForEach(Array(stages.enumerated()), id: \.element.id) { index, stage in
                         EditableTimelineStageRow(
@@ -79,18 +79,18 @@ struct TimelineDetailView: View {
                         }
                         .listRowInsets(EdgeInsets(top: 0, leading: 20, bottom: 0, trailing: 20))
                         .listRowSeparator(.hidden)
-                        .listRowBackground(Color.clear)
+                        .listRowBackground(Color.white)
                     }
 
                     addCustomStepButton
                         .listRowInsets(EdgeInsets(top: 10, leading: 20, bottom: 8, trailing: 20))
                         .listRowSeparator(.hidden)
-                        .listRowBackground(Color.clear)
+                        .listRowBackground(Color.white)
 
                     infoBox
                         .listRowInsets(EdgeInsets(top: 0, leading: 20, bottom: 40, trailing: 20))
                         .listRowSeparator(.hidden)
-                        .listRowBackground(Color.clear)
+                        .listRowBackground(Color.white)
                 }
                 .listStyle(.plain)
                 .scrollContentBackground(.hidden)
@@ -250,12 +250,12 @@ struct TimelineDetailView: View {
         }
     }
     var header: some View {
-        HStack {
+        HStack(spacing: 16) {
             Button {
                 dismiss()
             } label: {
                 Image(systemName: "chevron.left")
-                    .font(.system(size: 24, weight: .medium))
+                    .font(.system(size: 25, weight: .medium))
                     .frame(width: 44, height: 44)
             }
             .buttonStyle(.plain)
@@ -270,41 +270,42 @@ struct TimelineDetailView: View {
             Button {
                 saveTimeline()
             } label: {
-                Label("Save", systemImage: "tray.and.arrow.down")
+                Text("Save")
                     .font(.system(size: 18, weight: .bold))
-                    .labelStyle(.titleAndIcon)
-                    .padding(.horizontal, 14)
-                    .frame(height: 44)
-                    .background(Color(hex: "0B4543"))
-                    .foregroundColor(.white)
-                    .cornerRadius(12)
+                    .foregroundColor(Color(hex: "183A38"))
+                    .frame(minWidth: 58, minHeight: 44)
             }
         }
         .foregroundColor(Color(hex: "183A38"))
-        .padding(.horizontal, 18)
-        .padding(.top, 60)
-        .padding(.bottom, 16)
+        .padding(.horizontal, 20)
+        .padding(.top, 62)
+        .padding(.bottom, 24)
         .background(Color.white)
+        .overlay(alignment: .bottom) {
+            Rectangle()
+                .fill(Color(hex: "E5E1DB"))
+                .frame(height: 1)
+        }
     }
 
     var startDateRow: some View {
         HStack(spacing: 14) {
             Image(systemName: "calendar")
-                .font(.system(size: 24))
+                .font(.system(size: 24, weight: .medium))
                 .foregroundColor(Color(hex: "EBAA2D"))
 
             Text("Start date")
-                .font(.system(size: 21))
+                .font(.system(size: 24))
                 .foregroundColor(Color(hex: "6E8583"))
 
             Text(startDateText)
-                .font(.system(size: 21, weight: .bold))
+                .font(.system(size: 24, weight: .bold))
                 .foregroundColor(Color(hex: "183A38"))
         }
     }
 
     var exportButtons: some View {
-        HStack(spacing: 14) {
+        HStack(spacing: 12) {
             ExportButton(title: "Export CSV") {
                 exportCSV()
             }
@@ -317,20 +318,20 @@ struct TimelineDetailView: View {
     }
 
     var columnHeaders: some View {
-        HStack(spacing: 10) {
+        HStack(spacing: 12) {
             Text("STEP")
                 .frame(maxWidth: .infinity, alignment: .leading)
 
             Text("DATES")
-                .frame(width: 102)
+                .frame(width: 92)
 
             Text("DURATION")
-                .frame(width: 92)
+                .frame(width: 112)
         }
-        .font(.system(size: 16, weight: .bold))
+        .font(.system(size: 17, weight: .bold))
         .foregroundColor(Color(hex: "6E8583"))
-        .padding(.leading, 70)
-        .padding(.trailing, 40)
+        .padding(.leading, 96)
+        .padding(.trailing, 72)
     }
 
     var addCustomStepButton: some View {
@@ -375,7 +376,7 @@ struct TimelineDetailView: View {
         }
         .padding(22)
         .background(Color(hex: "EFEEE9"))
-        .cornerRadius(18)
+        .cornerRadius(12)
     }
 }
 
@@ -387,15 +388,15 @@ struct EditableTimelineStageRow: View {
 
     var body: some View {
         VStack(spacing: 0) {
-            HStack(spacing: 12) {
+            HStack(spacing: 14) {
                 ZStack {
                     Circle()
                         .fill(Color(hex: stage.colourHex))
-                        .frame(width: 50, height: 50)
+                        .frame(width: 54, height: 54)
 
                     if stage.isMilestone {
                         Image(systemName: "flag")
-                            .font(.system(size: 23, weight: .semibold))
+                            .font(.system(size: 25, weight: .medium))
                             .foregroundColor(.white)
                     } else {
                         Text("\(index)")
@@ -403,11 +404,11 @@ struct EditableTimelineStageRow: View {
                             .foregroundColor(.white)
                     }
                 }
-                .frame(width: 54)
+                .frame(width: 68)
 
-                VStack(alignment: .leading, spacing: 6) {
+                VStack(alignment: .leading, spacing: 5) {
                     Text(stage.title)
-                        .font(.system(size: 25, weight: .semibold))
+                        .font(.system(size: 23, weight: .bold))
                         .foregroundColor(Color(hex: "183A38"))
                         .lineLimit(2)
                         .truncationMode(.tail)
@@ -418,24 +419,24 @@ struct EditableTimelineStageRow: View {
                         .font(.system(size: 21))
                         .foregroundColor(Color(hex: "6E8583"))
                         .lineLimit(1)
-                        .minimumScaleFactor(0.9)
+                        .minimumScaleFactor(0.82)
                 }
                 .frame(maxWidth: .infinity, alignment: .leading)
 
                 VStack(spacing: 2) {
                     Text("\(stage.duration)")
-                        .font(.system(size: 38, weight: .bold))
+                        .font(.system(size: 34, weight: .bold))
                         .foregroundColor(Color(hex: "EBAA2D"))
                         .lineLimit(1)
                         .minimumScaleFactor(0.75)
 
                     Text(durationUnitText(for: stage))
-                        .font(.system(size: 18))
+                        .font(.system(size: 17))
                         .foregroundColor(Color(hex: "6E8583"))
                         .lineLimit(1)
                         .minimumScaleFactor(0.75)
                 }
-                .frame(width: 76)
+                .frame(width: 60)
 
                 Button {
                     onEdit()
@@ -444,11 +445,11 @@ struct EditableTimelineStageRow: View {
                         .rotationEffect(.degrees(90))
                         .font(.system(size: 22, weight: .bold))
                         .foregroundColor(Color(hex: "6E8583"))
-                        .frame(width: 38, height: 44)
+                        .frame(width: 34, height: 44)
                 }
             }
-            .frame(minHeight: 160, maxHeight: 180)
-            .padding(.vertical, 4)
+            .frame(minHeight: 112)
+            .padding(.vertical, 12)
 
             Divider()
                 .background(Color(hex: "DDD9D2"))
@@ -457,10 +458,10 @@ struct EditableTimelineStageRow: View {
 
     private func dateText(for stage: EditableTimelineStage) -> String {
         if stage.durationType == .milestone {
-            return stage.startDate.formatted(date: .abbreviated, time: .omitted)
+            return Self.dateFormatter.string(from: stage.startDate)
         }
 
-        return "\(stage.startDate.formatted(date: .abbreviated, time: .omitted)) → \(stage.endDate.formatted(date: .abbreviated, time: .omitted))"
+        return "\(Self.dateFormatter.string(from: stage.startDate)) → \(Self.dateFormatter.string(from: stage.endDate))"
     }
 
     private func durationUnitText(for stage: EditableTimelineStage) -> String {
@@ -473,6 +474,12 @@ struct EditableTimelineStageRow: View {
             return ""
         }
     }
+
+    private static let dateFormatter: DateFormatter = {
+        let formatter = DateFormatter()
+        formatter.dateFormat = "dd MMM yyyy"
+        return formatter
+    }()
 }
 
 struct ExportButton: View {
@@ -481,19 +488,23 @@ struct ExportButton: View {
 
     var body: some View {
         Button(action: action) {
-            HStack(spacing: 14) {
+            HStack(spacing: 12) {
                 Image(systemName: "square.and.arrow.down")
-                    .font(.system(size: 22))
+                    .font(.system(size: 22, weight: .medium))
 
                 Text(title)
-                    .font(.system(size: 20, weight: .semibold))
+                    .font(.system(size: 19, weight: .semibold))
             }
             .foregroundColor(Color(hex: "183A38"))
             .padding(.horizontal, 18)
-            .frame(height: 46)
+            .frame(height: 44)
             .background(Color.white)
-            .cornerRadius(14)
-            .shadow(color: .black.opacity(0.08), radius: 6, x: 0, y: 3)
+            .overlay(
+                RoundedRectangle(cornerRadius: 12)
+                    .stroke(Color(hex: "DDD9D2"), lineWidth: 1.5)
+            )
+            .cornerRadius(12)
+            .shadow(color: .black.opacity(0.08), radius: 3, x: 0, y: 2)
         }
     }
 }
