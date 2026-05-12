@@ -7,7 +7,7 @@ struct TimelineDetailView: View {
     let projectName: String
     let startDateText: String
     let templateName: String
-    let initialStages: [EditableTimelineStage]? = nil
+    let initialStages: [EditableTimelineStage]?
 
     @State private var stages: [EditableTimelineStage] = []
     @State private var stageBeingEdited: EditableTimelineStage?
@@ -24,6 +24,18 @@ struct TimelineDetailView: View {
         let formatter = DateFormatter()
         formatter.dateStyle = .medium
         return formatter.date(from: startDateText) ?? Date()
+    }
+
+    init(
+        projectName: String,
+        startDateText: String,
+        templateName: String,
+        initialStages: [EditableTimelineStage]? = nil
+    ) {
+        self.projectName = projectName
+        self.startDateText = startDateText
+        self.templateName = templateName
+        self.initialStages = initialStages
     }
 
     var body: some View {
