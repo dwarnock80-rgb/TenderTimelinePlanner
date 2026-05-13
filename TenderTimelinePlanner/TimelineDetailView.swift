@@ -255,25 +255,30 @@ struct TimelineDetailView: View {
                 dismiss()
             } label: {
                 Image(systemName: "chevron.left")
-                    .font(.system(size: 25, weight: .medium))
+                    .font(.system(size: 23, weight: .medium))
                     .frame(width: 44, height: 44)
             }
             .buttonStyle(.plain)
 
             Text(projectName.isEmpty ? "Test" : projectName)
-                .font(.system(size: 31, weight: .bold, design: .serif))
+                .font(.system(size: 28, weight: .bold, design: .serif))
                 .lineLimit(1)
-                .padding(.leading, 8)
+                .minimumScaleFactor(0.75)
+                .padding(.leading, 4)
 
             Spacer()
 
-            Button {
-                saveTimeline()
+            Menu {
+                Button {
+                    saveTimeline()
+                } label: {
+                    Label("Save", systemImage: "tray.and.arrow.down")
+                }
             } label: {
-                Text("Save")
-                    .font(.system(size: 18, weight: .bold))
-                    .foregroundColor(Color(hex: "183A38"))
-                    .frame(minWidth: 58, minHeight: 44)
+                Image(systemName: "ellipsis")
+                    .rotationEffect(.degrees(90))
+                    .font(.system(size: 24, weight: .bold))
+                    .frame(width: 44, height: 44)
             }
         }
         .foregroundColor(Color(hex: "183A38"))
@@ -291,16 +296,19 @@ struct TimelineDetailView: View {
     var startDateRow: some View {
         HStack(spacing: 14) {
             Image(systemName: "calendar")
-                .font(.system(size: 24, weight: .medium))
+                .font(.system(size: 22, weight: .medium))
                 .foregroundColor(Color(hex: "EBAA2D"))
+                .frame(width: 26)
 
             Text("Start date")
-                .font(.system(size: 24))
+                .font(.system(size: 22))
                 .foregroundColor(Color(hex: "6E8583"))
 
             Text(startDateText)
-                .font(.system(size: 24, weight: .bold))
+                .font(.system(size: 22, weight: .bold))
                 .foregroundColor(Color(hex: "183A38"))
+                .lineLimit(1)
+                .minimumScaleFactor(0.78)
         }
     }
 
@@ -315,6 +323,7 @@ struct TimelineDetailView: View {
                 }
             }
         }
+        .frame(maxWidth: .infinity, alignment: .leading)
     }
 
     var columnHeaders: some View {
@@ -323,15 +332,16 @@ struct TimelineDetailView: View {
                 .frame(maxWidth: .infinity, alignment: .leading)
 
             Text("DATES")
-                .frame(width: 92)
+                .frame(width: 82)
 
             Text("DURATION")
-                .frame(width: 112)
+                .frame(width: 92)
         }
-        .font(.system(size: 17, weight: .bold))
+        .font(.system(size: 15, weight: .bold))
         .foregroundColor(Color(hex: "6E8583"))
-        .padding(.leading, 96)
-        .padding(.trailing, 72)
+        .tracking(2)
+        .padding(.leading, 74)
+        .padding(.trailing, 48)
     }
 
     var addCustomStepButton: some View {
@@ -392,23 +402,23 @@ struct EditableTimelineStageRow: View {
                 ZStack {
                     Circle()
                         .fill(Color(hex: stage.colourHex))
-                        .frame(width: 54, height: 54)
+                        .frame(width: 46, height: 46)
 
                     if stage.isMilestone {
                         Image(systemName: "flag")
-                            .font(.system(size: 25, weight: .medium))
+                            .font(.system(size: 22, weight: .medium))
                             .foregroundColor(.white)
                     } else {
                         Text("\(index)")
-                            .font(.system(size: 20, weight: .bold))
+                            .font(.system(size: 17, weight: .bold))
                             .foregroundColor(.white)
                     }
                 }
-                .frame(width: 68)
+                .frame(width: 54)
 
                 VStack(alignment: .leading, spacing: 5) {
                     Text(stage.title)
-                        .font(.system(size: 23, weight: .bold))
+                        .font(.system(size: 20, weight: .bold))
                         .foregroundColor(Color(hex: "183A38"))
                         .lineLimit(2)
                         .truncationMode(.tail)
@@ -416,7 +426,7 @@ struct EditableTimelineStageRow: View {
                         .fixedSize(horizontal: false, vertical: true)
 
                     Text(dateText(for: stage))
-                        .font(.system(size: 21))
+                        .font(.system(size: 17))
                         .foregroundColor(Color(hex: "6E8583"))
                         .lineLimit(1)
                         .minimumScaleFactor(0.82)
@@ -425,31 +435,31 @@ struct EditableTimelineStageRow: View {
 
                 VStack(spacing: 2) {
                     Text("\(stage.duration)")
-                        .font(.system(size: 34, weight: .bold))
+                        .font(.system(size: 28, weight: .bold))
                         .foregroundColor(Color(hex: "EBAA2D"))
                         .lineLimit(1)
                         .minimumScaleFactor(0.75)
 
                     Text(durationUnitText(for: stage))
-                        .font(.system(size: 17))
+                        .font(.system(size: 14))
                         .foregroundColor(Color(hex: "6E8583"))
                         .lineLimit(1)
                         .minimumScaleFactor(0.75)
                 }
-                .frame(width: 60)
+                .frame(width: 48)
 
                 Button {
                     onEdit()
                 } label: {
                     Image(systemName: "ellipsis")
                         .rotationEffect(.degrees(90))
-                        .font(.system(size: 22, weight: .bold))
+                        .font(.system(size: 19, weight: .bold))
                         .foregroundColor(Color(hex: "6E8583"))
-                        .frame(width: 34, height: 44)
+                        .frame(width: 28, height: 44)
                 }
             }
-            .frame(minHeight: 112)
-            .padding(.vertical, 12)
+            .frame(minHeight: 86)
+            .padding(.vertical, 8)
 
             Divider()
                 .background(Color(hex: "DDD9D2"))
@@ -490,14 +500,17 @@ struct ExportButton: View {
         Button(action: action) {
             HStack(spacing: 12) {
                 Image(systemName: "square.and.arrow.down")
-                    .font(.system(size: 22, weight: .medium))
+                    .font(.system(size: 20, weight: .medium))
 
                 Text(title)
-                    .font(.system(size: 19, weight: .semibold))
+                    .font(.system(size: 17, weight: .semibold))
+                    .lineLimit(1)
+                    .minimumScaleFactor(0.85)
             }
             .foregroundColor(Color(hex: "183A38"))
-            .padding(.horizontal, 18)
-            .frame(height: 44)
+            .padding(.horizontal, 14)
+            .frame(maxWidth: .infinity)
+            .frame(height: 40)
             .background(Color.white)
             .overlay(
                 RoundedRectangle(cornerRadius: 12)
