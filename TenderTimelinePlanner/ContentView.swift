@@ -20,16 +20,16 @@ struct ContentView: View {
 
                 ScrollView {
 
-                    VStack(spacing: 24) {
+                    VStack(spacing: 14) {
 
                         HeaderView()
 
-                        VStack(alignment: .leading, spacing: 20) {
+                        VStack(alignment: .leading, spacing: 12) {
 
                             Text("Create new timeline")
-                                .font(.system(size: 28, weight: .bold, design: .serif))
+                                .font(.system(size: 24, weight: .bold, design: .serif))
 
-                            VStack(alignment: .leading, spacing: 8) {
+                            VStack(alignment: .leading, spacing: 6) {
 
                                 Text("Project name")
                                     .foregroundColor(.gray)
@@ -38,12 +38,13 @@ struct ContentView: View {
                                     "e.g. School Catering Contract",
                                     text: $projectName
                                 )
-                                .padding()
+                                .padding(.horizontal, 14)
+                                .frame(height: 48)
                                 .background(Color.white)
                                 .cornerRadius(12)
                             }
 
-                            VStack(alignment: .leading, spacing: 8) {
+                            VStack(alignment: .leading, spacing: 6) {
 
                                 Text("Start date")
                                     .foregroundColor(.gray)
@@ -54,12 +55,13 @@ struct ContentView: View {
                                     displayedComponents: .date
                                 )
                                 .labelsHidden()
-                                .padding()
+                                .padding(.horizontal, 14)
+                                .frame(height: 48)
                                 .background(Color.white)
                                 .cornerRadius(12)
                             }
 
-                            VStack(alignment: .leading, spacing: 8) {
+                            VStack(alignment: .leading, spacing: 6) {
 
                                 Text("Template")
                                     .foregroundColor(.gray)
@@ -73,7 +75,8 @@ struct ContentView: View {
                                     }
                                 }
                                 .pickerStyle(.menu)
-                                .padding()
+                                .padding(.horizontal, 14)
+                                .frame(height: 48)
                                 .background(Color.white)
                                 .cornerRadius(12)
                             }
@@ -100,7 +103,7 @@ struct ContentView: View {
 
                                     Spacer()
                                 }
-                                .padding()
+                                .frame(height: 50)
                                 .background(Color.orange.opacity(0.7))
                                 .foregroundColor(.white)
                                 .cornerRadius(14)
@@ -127,16 +130,18 @@ struct ContentView: View {
 
                                     Spacer()
                                 }
-                                .padding()
+                                .padding(.horizontal, 14)
+                                .frame(height: 54)
                                 .background(Color.white)
                                 .cornerRadius(14)
                             }
                             .buttonStyle(.plain)
                         }
-                        .padding()
+                        .padding(20)
                         .background(Color.white.opacity(0.9))
-                        .cornerRadius(24)
-                        .padding()
+                        .cornerRadius(22)
+                        .padding(.horizontal, 18)
+                        .padding(.bottom, 10)
                     }
                 }
                 .background(Color(.systemGroupedBackground))
@@ -157,31 +162,31 @@ struct HeaderView: View {
 
     var body: some View {
 
-        VStack(spacing: 18) {
+        VStack(spacing: 10) {
 
             Image(systemName: "triangle")
-                .font(.system(size: 36, weight: .medium))
+                .font(.system(size: 26, weight: .medium))
                 .foregroundColor(Color(hex: "E7AE42"))
-                .frame(width: 92, height: 92)
+                .frame(width: 58, height: 58)
                 .overlay(
                     Rectangle()
-                        .stroke(Color(hex: "E7AE42"), lineWidth: 4)
+                        .stroke(Color(hex: "E7AE42"), lineWidth: 3)
                 )
-                .padding(.top, 70)
+                .padding(.top, 42)
 
             Text("Tender Timeline")
-                .font(.system(size: 42, weight: .bold, design: .serif))
+                .font(.system(size: 32, weight: .bold, design: .serif))
                 .foregroundColor(.white)
 
             Text("Plan procurement timelines with clarity and control.")
-                .font(.system(size: 20))
+                .font(.system(size: 16))
                 .foregroundColor(Color.white.opacity(0.65))
                 .multilineTextAlignment(.center)
-                .lineSpacing(4)
-                .padding(.horizontal, 50)
+                .lineSpacing(2)
+                .padding(.horizontal, 44)
         }
         .frame(maxWidth: .infinity)
-        .padding(.bottom, 76)
+        .padding(.bottom, 32)
         .background(Color(hex: "0B4543"))
     }
 }
