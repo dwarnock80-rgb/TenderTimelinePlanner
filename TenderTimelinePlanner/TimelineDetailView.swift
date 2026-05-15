@@ -14,9 +14,11 @@ struct TimelineDetailView: View {
     @State private var showingEditSheet = false
     @State private var showingAddCustomStep = false
     @State private var csvExportURL: URL?
-    @State private var showingCSVShareSheet = false
     @State private var ganttExportURL: URL?
-    @State private var showingGanttShareSheet = false
+    @State private var shareSheetURL: URL?
+    @State private var showShareSheet = false
+    @State private var showingExportError = false
+    @State private var exportErrorMessage = ""
     @State private var showingSavedConfirmation = false
     @State private var hasLoadedStages = false
 
@@ -105,6 +107,11 @@ struct TimelineDetailView: View {
         } message: {
             Text("You can reopen it from Saved Timelines.")
         }
+        .alert("Export failed", isPresented: $showingExportError) {
+            Button("OK", role: .cancel) { }
+        } message: {
+            Text(exportErrorMessage)
+        }
         .sheet(item: $stageBeingEdited) { stage in
             EditStageView(stage: stage) { updatedStage in
                 updateStage(updatedStage)
@@ -120,16 +127,36 @@ struct TimelineDetailView: View {
                 )
             }
         }
-        .sheet(isPresented: $showingCSVShareSheet) {
-            if let csvExportURL {
-                ShareSheet(activityItems: [csvExportURL])
-            }
+        .sheet(isPresented: shareSheetBinding) {
+            shareSheetContent
         }
-        .sheet(isPresented: $showingGanttShareSheet) {
-            if let ganttExportURL {
-                ShareSheet(activityItems: [ganttExportURL])
-            }
+    }
+
+    @ViewBuilder
+    private var shareSheetContent: some View {
+        if let shareSheetURL {
+            ShareSheet(activityItems: [shareSheetURL])
+        } else {
+            Text("Export file is not ready.")
+                .onAppear {
+                    handleExportError("Share sheet requested before an export file was ready.")
+                }
         }
+    }
+
+    private var shareSheetBinding: Binding<Bool> {
+        Binding(
+            get: {
+                showShareSheet && shareSheetURL != nil
+            },
+            set: { newValue in
+                showShareSheet = newValue
+
+                if !newValue {
+                    shareSheetURL = nil
+                }
+            }
+        )
     }
 
     private func loadStagesIfNeeded() {
@@ -214,11 +241,18 @@ struct TimelineDetailView: View {
 
         do {
             try csv.write(to: url, atomically: true, encoding: .utf8)
+            print("CSV export URL: \(url)")
+
+            guard validateExportFile(at: url, exportName: "CSV") else {
+                csvExportURL = nil
+                return
+            }
+
             csvExportURL = url
-            print("CSV created at: \(url)")
-            showingCSVShareSheet = true
+            shareSheetURL = url
+            showShareSheet = true
         } catch {
-            print("Failed to export CSV: \(error)")
+            handleExportError("Failed to export CSV: \(error.localizedDescription)")
         }
     }
     
@@ -233,21 +267,67 @@ struct TimelineDetailView: View {
 
         renderer.scale = 3
 
-        if let image = renderer.uiImage,
-           let data = image.pngData() {
-
-            let fileName = "\(projectName.isEmpty ? "Tender Timeline Gantt" : projectName + " Gantt").png"
-            let url = FileManager.default.temporaryDirectory.appendingPathComponent(fileName)
-
-            do {
-                try data.write(to: url)
-                ganttExportURL = url
-                print("Gantt image created at: \(url)")
-                showingGanttShareSheet = true
-            } catch {
-                print("Failed to export Gantt image: \(error)")
-            }
+        guard let image = renderer.uiImage else {
+            handleExportError("Failed to render Gantt image.")
+            return
         }
+
+        guard let data = image.pngData() else {
+            handleExportError("Failed to create Gantt PNG data.")
+            return
+        }
+
+        let fileName = "\(projectName.isEmpty ? "Tender Timeline Gantt" : projectName + " Gantt").png"
+        let url = FileManager.default.temporaryDirectory.appendingPathComponent(fileName)
+
+        do {
+            try data.write(to: url)
+            print("Gantt export URL: \(url)")
+
+            guard validateExportFile(at: url, exportName: "Gantt") else {
+                ganttExportURL = nil
+                return
+            }
+
+            ganttExportURL = url
+            shareSheetURL = url
+            showShareSheet = true
+        } catch {
+            handleExportError("Failed to export Gantt image: \(error.localizedDescription)")
+        }
+    }
+
+    private func validateExportFile(at url: URL, exportName: String) -> Bool {
+        let path = url.path
+        let fileExists = FileManager.default.fileExists(atPath: path)
+        print("\(exportName) file exists: \(fileExists)")
+
+        guard fileExists else {
+            handleExportError("\(exportName) export file was not created.")
+            return false
+        }
+
+        do {
+            let attributes = try FileManager.default.attributesOfItem(atPath: path)
+            let fileSize = attributes[.size] as? UInt64 ?? 0
+            print("\(exportName) file size: \(fileSize)")
+
+            guard fileSize > 0 else {
+                handleExportError("\(exportName) export file is empty.")
+                return false
+            }
+
+            return true
+        } catch {
+            handleExportError("Failed to inspect \(exportName) export file: \(error.localizedDescription)")
+            return false
+        }
+    }
+
+    private func handleExportError(_ message: String) {
+        print("Export error: \(message)")
+        exportErrorMessage = message
+        showingExportError = true
     }
     var header: some View {
         HStack(spacing: 12) {
