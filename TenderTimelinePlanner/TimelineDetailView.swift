@@ -605,5 +605,6 @@ struct ExportButton: View {
             .cornerRadius(12)
             .shadow(color: .black.opacity(0.08), radius: 3, x: 0, y: 2)
         }
+        .buttonStyle(.plain)
     }
 }

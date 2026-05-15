@@ -26,43 +26,49 @@ struct SavedTimelinesView: View {
 
                 headerSection
 
-                ScrollView {
-                    VStack(spacing: 18) {
+                List {
+                    searchBar
+                        .listRowInsets(EdgeInsets(top: 18, leading: 0, bottom: 18, trailing: 0))
+                        .listRowSeparator(.hidden)
+                        .listRowBackground(Color.clear)
 
-                        searchBar
-
-                        if filteredTimelines.isEmpty {
-                            Text("No saved timelines yet")
-                                .font(.system(size: 20, weight: .semibold))
-                                .foregroundColor(Color(hex: "6E8583"))
-                                .frame(maxWidth: .infinity)
-                                .padding(.top, 30)
-                        } else {
-                            ForEach(filteredTimelines) { timeline in
-                                NavigationLink {
-                                    TimelineDetailView(
-                                        projectName: timeline.projectName,
-                                        startDateText: timeline.startDateText,
-                                        templateName: timeline.templateName,
-                                        initialStages: timeline.stages
-                                    )
+                    if filteredTimelines.isEmpty {
+                        Text("No saved timelines yet")
+                            .font(.system(size: 20, weight: .semibold))
+                            .foregroundColor(Color(hex: "6E8583"))
+                            .frame(maxWidth: .infinity)
+                            .padding(.top, 30)
+                            .listRowInsets(EdgeInsets(top: 0, leading: 26, bottom: 0, trailing: 26))
+                            .listRowSeparator(.hidden)
+                            .listRowBackground(Color.clear)
+                    } else {
+                        ForEach(filteredTimelines) { timeline in
+                            NavigationLink {
+                                TimelineDetailView(
+                                    projectName: timeline.projectName,
+                                    startDateText: timeline.startDateText,
+                                    templateName: timeline.templateName,
+                                    initialStages: timeline.stages
+                                )
+                            } label: {
+                                TimelineRow(timeline: timeline)
+                            }
+                            .buttonStyle(.plain)
+                            .swipeActions(edge: .trailing) {
+                                Button(role: .destructive) {
+                                    deleteTimeline(timeline)
                                 } label: {
-                                    TimelineRow(timeline: timeline)
-                                }
-                                .buttonStyle(.plain)
-                                .swipeActions(edge: .trailing) {
-                                    Button(role: .destructive) {
-                                        deleteTimeline(timeline)
-                                    } label: {
-                                        Label("Delete", systemImage: "trash")
-                                    }
+                                    Label("Delete", systemImage: "trash")
                                 }
                             }
+                            .listRowInsets(EdgeInsets(top: 0, leading: 0, bottom: 18, trailing: 0))
+                            .listRowSeparator(.hidden)
+                            .listRowBackground(Color.clear)
                         }
                     }
-                    .padding(.top, 18)
-                    .padding(.bottom, 120)
                 }
+                .listStyle(.plain)
+                .scrollContentBackground(.hidden)
             }
         }
         .onAppear {
